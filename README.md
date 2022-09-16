@@ -45,3 +45,5 @@ $ cargo install --git https://github.com/mthom/scryer-prolog.git
 
     The JSON AST does not contain position information, but it is a "complete" AST.
     The AST includes all text in the parsed text, so position information can be calculated from the AST.
+
+* [lm.pro](lm.pro) is a proof of concept of parsing lightweight markup languages.

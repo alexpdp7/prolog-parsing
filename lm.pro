@@ -45,8 +45,6 @@ text(T) --> text(T, disallowed([])).
 text([T|TS], disallowed(D)) --> sp(T, disallowed(D)), text(TS, disallowed(D)).
 text([], _) --> [].
 
-:- use_module(library(debug)).
-
 sp(inline(IB, T, IE), disallowed(D)) --> {matching_delims(IB, IE), \+memberchk(IB, D)}, begin_inline(bi(IB)), !, text(T, disallowed([IB, IE|D])), end_inline(ei(IE)).
 
 sp(t(T), disallowed(D)) --> seq(T), {valid(T, disallowed(D))}, !.

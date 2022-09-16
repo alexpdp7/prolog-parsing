@@ -19,12 +19,8 @@
 :- use_module(library(lists)).
 :- use_module(library(iso_ext)).
 
-% a text line is plain text followed by a blank line
-text_line(tl(T, LE)) --> plain_text(T), line_end(LE).
-
-% plain text is a sequence of anything, but not empty, and which does not
-% contain a new line
-plain_text(t(T)) --> seq(T), {T \= [], \+ member('\n', T)}.
+% a text line is text followed by a blank line
+text_line(tl(T, LE)) --> text(T, disallowed(["\n"])), {T\=[]}, line_end(LE).
 
 line_end(le("\n")) --> "\n".
 

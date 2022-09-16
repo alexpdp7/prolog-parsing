@@ -1,3 +1,5 @@
+# Introduction
+
 This repository contains experiments in using Prolog to write parsers.
 
 The motivation for writing this is the difficulties in writing parsers for lightweight markup languages, such as Markdown and AsciiDoc.
@@ -25,3 +27,21 @@ https://github.com/mthom/scryer-prolog/ is a recent Prolog implementation that i
 This repo uses Scryer Prolog to experiment if Prolog can be used to write parsers for lightweight markup languages more productively than with traditional parsing tools.
 
 Additionally, this repo tries to explain how to write parsers in Prolog for people who have no experience with Prolog, or with no parsing experience.
+
+# Requirements
+
+Scryer Prolog is written in Rust.
+Follow [the instructions to install Rust](https://rustup.rs/).
+Then install the latest development code of Scryer Prolog:
+
+```
+$ cargo install --git https://github.com/mthom/scryer-prolog.git
+```
+
+# Examples
+
+* [simple.pro](simple.pro) is a proof of concept that demonstrates that Prolog can be used to parse and generate ASTs.
+  The program parses files following a very simple grammar used in many DCG tutorials, and outputs a JSON AST.
+
+    The JSON AST does not contain position information, but it is a "complete" AST.
+    The AST includes all text in the parsed text, so position information can be calculated from the AST.

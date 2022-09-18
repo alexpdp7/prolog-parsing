@@ -30,6 +30,7 @@ post_constrained_formatting_mark(post_cfm(X)) --> space(sp([X])).
 post_constrained_formatting_mark(post_cfm(X)) --> punct(pu([X])).
 post_constrained_formatting_mark(post_cfm(el)) --> end_line(el).
 
+% TODO: the content of a constrained formatting mark cannot begin/end with spaces
 constrained_formatting_mark([Pre, cfm(F, T, F)]), [Post] -->
     pre_constrained_formatting_mark(Pre),
     formatting_mark(F),

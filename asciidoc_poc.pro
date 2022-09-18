@@ -36,7 +36,7 @@ constrained_formatting_mark([Pre, cfm(F, T, F)]), [Post] -->
     pre_constrained_formatting_mark(pre_cfm(Pre)),
     formatting_mark(F),
     nested_line_parts(T, F),
-    {not_wrapped_in_spaces(T)},
+    {not_wrapped_in_spaces(T), T \= [bl|[el|_]]}, % TODO: bogus, we should get rid of those bl,el bits before!
     formatting_mark(F),
     post_constrained_formatting_mark(post_cfm(Post)).
 
@@ -57,8 +57,8 @@ unconstrained_formatting_mark(ucfm([F, F, T, F, F])) -->
 
 char(T) --> [T].
 
-line_part(X) --> constrained_formatting_mark(X), !.
 line_part(X) --> unconstrained_formatting_mark(X), !.
+line_part(X) --> constrained_formatting_mark(X), !.
 line_part(X) --> char(X), !.
 
 line_parts([X|XS]) --> line_part(X), line_parts(XS).

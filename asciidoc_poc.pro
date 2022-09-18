@@ -1,5 +1,5 @@
 % Sample parsing of some AsciiDoc features
-% This one currently only works on SWI Prolog
+% Works on SWI Prolog, might work with Scryer Prolog
 %
 % Differences from AsciiDoctor:
 %
@@ -7,8 +7,8 @@
 
 :- set_prolog_flag(double_quotes, chars).
 
-% this is required for Scryer Prolog
-%:- use_module(library(lists)).
+% this is unnecessary with SWI, but needed with Scryer
+:- use_module(library(lists)).
 
 punct(",") --> ",".
 punct(";") --> ";".

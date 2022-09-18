@@ -40,8 +40,8 @@ constrained_formatting_mark([Pre, cfm(F, T, F)]), [Post] -->
     post_constrained_formatting_mark(post_cfm(Post)).
 
 not_wrapped_in_spaces(X) :- not_prefixed_by_spaces(X), reverse(X, RX), not_prefixed_by_spaces(RX).
-not_prefixed_by_spaces([[txt([bl])]|X]) :- !, not_prefixed_by_spaces(X).
-not_prefixed_by_spaces([[txt([' '])]|_]) :- !, fail.
+not_prefixed_by_spaces([txt([bl])|X]) :- !, not_prefixed_by_spaces(X).
+not_prefixed_by_spaces([txt([' '])|_]) :- !, fail.
 not_prefixed_by_spaces(_).
 
 % this is a hack to surround the content of a constrained formatting mark in be-el
@@ -50,7 +50,7 @@ nested_line_parts(X, F, B, A) :- append([B1, F, B2], B), append([[bl], B1, [el],
 text(txt(T)) --> string(T), {length(T,X), X =\= 0}.
 
 line_part(X) --> constrained_formatting_mark(X), !.
-line_part([X]) --> text(X), !.
+line_part(X) --> text(X), !.
 
 line_parts([X|XS]) --> line_part(X), line_parts(XS).
 line_parts([]) --> [].

@@ -28,8 +28,8 @@ formatting_mark("~") --> "~".
 pre_constrained_formatting_mark(pre_cfm(X)) --> space(X).
 pre_constrained_formatting_mark(pre_cfm(bl)) --> [bl].
 
-post_constrained_formatting_mark(post_cfm(X)) --> space(sp([X])).
-post_constrained_formatting_mark(post_cfm(X)) --> punct(pu([X])).
+post_constrained_formatting_mark(post_cfm(X)) --> space(X).
+post_constrained_formatting_mark(post_cfm(X)) --> punct(X).
 post_constrained_formatting_mark(post_cfm(el)) --> [el].
 
 constrained_formatting_mark([Pre, cfm(F, T, F)]), [Post] -->

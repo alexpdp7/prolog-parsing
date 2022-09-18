@@ -8,20 +8,20 @@
 :- set_prolog_flag(double_quotes, chars).
 :- use_module(library(dcg/basics)).
 
-punct(pu(",")) --> ",".
-punct(pu(";")) --> ";".
-punct(pu("\"")) --> "\"".
-punct(pu(".")) --> ".".
-punct(pu("?")) --> "?".
-punct(pu("!")) --> "!".
+punct(",") --> ",".
+punct(";") --> ";".
+punct("\"") --> "\"".
+punct(".") --> ".".
+punct("?") --> "?".
+punct("!") --> "!".
 
-space(sp(" ")) --> " ".
+space(" ") --> " ".
 
-formatting_mark(fm("*")) --> "*".
-formatting_mark(fm("_")) --> "_".
-formatting_mark(fm("`")) --> "`".
-formatting_mark(fm("#")) --> "#".
-formatting_mark(fm("~")) --> "~".
+formatting_mark("*") --> "*".
+formatting_mark("_") --> "_".
+formatting_mark("`") --> "`".
+formatting_mark("#") --> "#".
+formatting_mark("~") --> "~".
 
 pre_constrained_formatting_mark(pre_cfm(X)) --> space(X).
 pre_constrained_formatting_mark(pre_cfm(bl)) --> [bl].
@@ -33,8 +33,7 @@ post_constrained_formatting_mark(post_cfm(el)) --> [el].
 constrained_formatting_mark([Pre, cfm(F, T, F)]), [Post] -->
     pre_constrained_formatting_mark(Pre),
     formatting_mark(F),
-    {F=fm(FM)},
-    nested_line_parts(T, FM),
+    nested_line_parts(T, F),
     {not_wrapped_in_spaces(T)},
     formatting_mark(F),
     post_constrained_formatting_mark(post_cfm(Post)).
@@ -50,8 +49,7 @@ nested_line_parts(X, F, B, A) :- append([B1, F, B2], B), append([[bl], B1, [el],
 unconstrained_formatting_mark(ucfm([F, F, T, F, F])) -->
     formatting_mark(F),
     formatting_mark(F),
-    {F=fm(FM)},
-    nested_line_parts(T,FM),
+    nested_line_parts(T,F),
     formatting_mark(F),
     formatting_mark(F).
 

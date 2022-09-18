@@ -1,6 +1,9 @@
 % Sample parsing of some AsciiDoc features
 % This one currently only works on SWI Prolog
 %
+% Differences from AsciiDoctor:
+%
+% * _*a*_ is not correctly handled by AsciiDoctor https://asciidoc.zulipchat.com/#narrow/stream/335219-asciidoc-lang/topic/Clarification.20on.20constrained.20formatting.20marks/near/299416275
 
 :- set_prolog_flag(double_quotes, chars).
 :- use_module(library(dcg/basics)).

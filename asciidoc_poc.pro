@@ -23,15 +23,12 @@ formatting_mark(fm("`")) --> "`".
 formatting_mark(fm("#")) --> "#".
 formatting_mark(fm("~")) --> "~".
 
-begin_line(bl) --> [bl].
-end_line(el) --> [el].
-
 pre_constrained_formatting_mark(pre_cfm(X)) --> space(X).
-pre_constrained_formatting_mark(pre_cfm(X)) --> begin_line(X).
+pre_constrained_formatting_mark(pre_cfm(bl)) --> [bl].
 
 post_constrained_formatting_mark(post_cfm(X)) --> space(sp([X])).
 post_constrained_formatting_mark(post_cfm(X)) --> punct(pu([X])).
-post_constrained_formatting_mark(post_cfm(el)) --> end_line(el).
+post_constrained_formatting_mark(post_cfm(el)) --> [el].
 
 % TODO: the content of a constrained formatting mark cannot begin/end with spaces
 constrained_formatting_mark([Pre, cfm(F, T, F)]), [Post] -->

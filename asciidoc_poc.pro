@@ -49,7 +49,7 @@ nested_line_parts(X, F, B, A) :- append([B1, F, B2], B), append([[bl], B1, [el],
 
 text(txt(T)) --> string(T), {length(T,X), X =\= 0}.
 
-line_part([Pre, cfm(F, T, F)]) --> constrained_formatting_mark([Pre, cfm(F, T, F)]), !.
+line_part(X) --> constrained_formatting_mark(X), !.
 line_part([X]) --> text(X), !.
 
 line_parts([X|XS]) --> line_part(X), line_parts(XS).

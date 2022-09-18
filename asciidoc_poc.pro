@@ -31,7 +31,7 @@ post_constrained_formatting_mark(post_cfm(X)) --> punct(pu([X])).
 post_constrained_formatting_mark(post_cfm(el)) --> [el].
 
 constrained_formatting_mark([Pre, cfm(F, T, F)]), [Post] -->
-    pre_constrained_formatting_mark(Pre),
+    pre_constrained_formatting_mark(pre_cfm(Pre)),
     formatting_mark(F),
     nested_line_parts(T, F),
     {not_wrapped_in_spaces(T)},

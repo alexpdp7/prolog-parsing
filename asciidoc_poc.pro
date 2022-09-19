@@ -64,7 +64,7 @@ line_part(X) --> char(X), !.
 line_parts([X|XS]) --> line_part(X), line_parts(XS).
 line_parts([]) --> [].
 
-parse_line(X, Y) :- append([[bl], X, [el]], XW), phrase(line_parts(Y), XW).
+parse_line(X, Y) :- append([[bl|X], [el]], XW), phrase(line_parts(Y), XW).
 
 % run tests with:
 %

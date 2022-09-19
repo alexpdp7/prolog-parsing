@@ -73,27 +73,40 @@ parse_line(X, Y) :- append([[bl|X], [el]], XW), phrase(line_parts(Y), XW).
 :- begin_tests(basic).
 :- set_prolog_flag(double_quotes, chars).
 
-test(plain) :- parse_line("abc", [bl, a, b, c, el]).
-test(single_cfm) :- parse_line("*abc*", [[bl, cfm([*], [bl, a, b, c, el], [*])], el]).
-test(nested_cfm) :- parse_line("*_a_*", [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], el], [*])], el]).
+test(plain) :- parse_line("abc", X), !,
+	       assertion(X == [bl, a, b, c, el]).
+test(single_cfm) :- parse_line("*abc*", X), !,
+		    assertion(X == [[bl, cfm([*], [bl, a, b, c, el], [*])], el]).
+test(nested_cfm) :- parse_line("*_a_*", X), !,
+		    assertion(X == [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], el], [*])], el]).
 
 % but see below cfms_separted_by_single_space; this one has two spaces
-test(nested_cfm_double_two_spaces) :- parse_line("*_a_  _b_*", [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], [' '], [[' '], cfm(['_'], [bl, b, el], ['_'])], el], [*])], el]).
+test(nested_cfm_double_two_spaces) :- parse_line("*_a_  _b_*", X), !,
+				      assertion(X == [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], [' '], [[' '], cfm(['_'], [bl, b, el], ['_'])], el], [*])], el]).
 
-test(cfm_no_constraint_outside) :- parse_line("a*b*", [bl, a, *, b, *, el]).
-test(cfm_no_constraint_inside) :- parse_line("* a *", [bl, *, ' ', a, ' ', *, el]).
+test(cfm_no_constraint_outside) :- parse_line("a*b*", X), !,
+				   assertion(X == [bl, a, *, b, *, el]).
+test(cfm_no_constraint_inside) :- parse_line("* a *", X), !,
+				  assertion(X == [bl, *, ' ', a, ' ', *, el]).
 
-test(ucfm) :- parse_line("aaaaa**b**", [bl, a, a, a, a, a, ucfm([[*], [*], [bl, b, el], [*], [*]]), el]).
-test(ucfm_nested_in_cfm) :- parse_line("_aa**b**_", [[bl, cfm(['_'], [bl, a, a, ucfm([[*], [*], [bl, b, el], [*], [*]]), el], ['_'])], el]).
-test(lone_ucfm) :- parse_line("**b**", [bl, ucfm([[*], [*], [bl, b, el], [*], [*]]), el]).
-test(lone_ucfm_with_nested_cfm) :- parse_line("**_b_**", [bl, ucfm([[*], [*], [[bl, cfm(['_'], [bl, b, el], ['_'])], el], [*], [*]]), el]).
+test(ucfm) :- parse_line("aaaaa**b**", X), !,
+	      assertion(X == [bl, a, a, a, a, a, ucfm([[*], [*], [bl, b, el], [*], [*]]), el]).
+test(ucfm_nested_in_cfm) :- parse_line("_aa**b**_", X), !,
+			    assertion(X == [[bl, cfm(['_'], [bl, a, a, ucfm([[*], [*], [bl, b, el], [*], [*]]), el], ['_'])], el]).
+test(lone_ucfm) :- parse_line("**b**", X), !,
+		   assertion(X == [bl, ucfm([[*], [*], [bl, b, el], [*], [*]]), el]).
+test(lone_ucfm_with_nested_cfm) :- parse_line("**_b_**", X), !,
+				   assertion(X == [bl, ucfm([[*], [*], [[bl, cfm(['_'], [bl, b, el], ['_'])], el], [*], [*]]), el]).
 
 % KNOWN ISSUES
 
-test(cfms_separated_by_single_space_not_parsed) :- parse_line("*abc* *def*", [[bl, cfm([*], [bl, a, b, c, el], [*])], [' '], *, d, e, f, *, el]).
+test(cfms_separated_by_single_space_not_parsed) :- parse_line("*abc* *def*", X), !,
+						   assertion(X == [[bl, cfm([*], [bl, a, b, c, el], [*])], [' '], *, d, e, f, *, el]).
 % ... although...
-test(cfms_separated_by_two_spaces) :- parse_line("*abc*  *def*", [[bl, cfm([*], [bl, a, b, c, el], [*])], [' '], [[' '], cfm([*], [bl, d, e, f, el], [*])], el]).
+test(cfms_separated_by_two_spaces) :- parse_line("*abc*  *def*", X), !,
+				      assertion(X == [[bl, cfm([*], [bl, a, b, c, el], [*])], [' '], [[' '], cfm([*], [bl, d, e, f, el], [*])], el]).
 
-test(consecutive_ucfms_wrongly_nested) :- parse_line("**a** **b**", [bl, ucfm([[*], [*], [bl, a, el, ucfm([[*], [*], [bl, ' ', el], [*], [*]]), b], [*], [*]]), el]).
+test(consecutive_ucfms_wrongly_nested) :- parse_line("**a** **b**", X), !,
+					  assertion(X == [bl, ucfm([[*], [*], [bl, a, el, ucfm([[*], [*], [bl, ' ', el], [*], [*]]), b], [*], [*]]), el]).
 
 :- end_tests(basic).

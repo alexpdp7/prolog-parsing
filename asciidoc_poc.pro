@@ -48,7 +48,7 @@ not_prefixed_by_spaces(_).
 % this is a hack to surround the content of a constrained formatting mark in be-el
 nested_line_parts(X, F, B, A) :- append([B1, F, B2], B), append([[bl], B1, [el], F, B2], NB), line_parts(X, NB, A).
 
-unconstrained_formatting_mark(ucfm([F, F, T, F, F])) -->
+unconstrained_formatting_mark(ucfm(F, F, T, F, F)) -->
     formatting_mark(F),
     formatting_mark(F),
     nested_line_parts(T,F),
@@ -92,15 +92,15 @@ test(cfm_no_constraint_inside) :- parse_line("* a *", X), !,
 				  assertion(X == [*, ' ', a, ' ', *]).
 
 test(ucfm) :- parse_line("aaaaa**b**", X), !,
-	      assertion(X == [a, a, a, a, a, ucfm([[*], [*], [b], [*], [*]])]).
+	      assertion(X == [a, a, a, a, a, ucfm([*], [*], [b], [*], [*])]).
 test(ucfm_nested_in_cfm) :- parse_line("_aa**b**_", X), !,
-			    assertion(X == [cfm(['_'], [a, a, ucfm([[*], [*], [b], [*], [*]])], ['_'])]).
+			    assertion(X == [cfm(['_'], [a, a, ucfm([*], [*], [b], [*], [*])], ['_'])]).
 test(lone_ucfm) :- parse_line("**b**", X), !,
-		   assertion(X == [ucfm([[*], [*], [b], [*], [*]])]).
+		   assertion(X == [ucfm([*], [*], [b], [*], [*])]).
 test(lone_ucfm_with_nested_cfm) :- parse_line("**_b_**", X), !,
-				   assertion(X == [ucfm([[*], [*], [cfm(['_'], [b], ['_'])], [*], [*]])]).
+				   assertion(X == [ucfm([*], [*], [cfm(['_'], [b], ['_'])], [*], [*])]).
 
 test(consecutive_ucfms) :- parse_line("**a** **b**", X), !,
-			   assertion(X == [ucfm([[*], [*], [a], [*], [*]]), ' ', ucfm([[*], [*], [b], [*], [*]])]).
+			   assertion(X == [ucfm([*], [*], [a], [*], [*]), ' ', ucfm([*], [*], [b], [*], [*])]).
 
 :- end_tests(basic).

@@ -10,6 +10,10 @@
 % this is unnecessary with SWI, but needed with Scryer
 :- use_module(library(lists)).
 
+% scryer-prolog TODO:
+% * find a way to run unit tests (they currently cause consulting this file to fail)
+% * no flatten in scryer
+
 punct(",") --> ",".
 punct(";") --> ";".
 punct("\"") --> "\"".

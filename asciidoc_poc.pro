@@ -79,9 +79,9 @@ parse_line(X, Y) :- append([[bl|X], [el]], XW), phrase(line_parts(Y), XW).
 test(plain) :- parse_line("abc", X), !,
 	       assertion(X == [a, b, c]).
 test(single_cfm) :- parse_line("*abc*", X), !,
-		    assertion(X == [cfm([*], [a, b, c], [*])).
+		    assertion(X == [cfm([*], [a, b, c], [*])]).
 test(nested_cfm) :- parse_line("*_a_*", X), !,
-		    assertion(X == [cfm([*], [cfm(['_'], [a], ['_'])], [*])).
+		    assertion(X == [cfm([*], [cfm(['_'], [a], ['_'])], [*])]).
 
 test(double_nested_cfm) :- parse_line("*_a_ _b_*", X), !,
                            assertion(X == [cfm([*], [cfm(['_'], [a], ['_']), ' ', cfm(['_'], [b], ['_'])], [*])]).

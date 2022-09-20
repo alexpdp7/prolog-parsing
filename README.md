@@ -24,11 +24,11 @@ https://github.com/rla/prolog-markdown is a Markdown parser written in Prolog.
 However, for efficiency, this parser requires many optimizations that make the code harder to understand.
 
 https://github.com/mthom/scryer-prolog/ is a recent Prolog implementation that includes [pioneering optimizations in string handling](https://github.com/mthom/scryer-prolog/#strings-and-partial-strings).
-This repo uses Scryer Prolog to experiment if Prolog can be used to write parsers for lightweight markup languages more productively than with traditional parsing tools.
+Some examples in this repo use Scryer Prolog, but some other require SWI-Prolog, which has more mature tooling and, for example, makes it easier to write unit tests.
 
 Additionally, this repo tries to explain how to write parsers in Prolog for people who have no experience with Prolog, or with no parsing experience.
 
-# Requirements
+# Installing Scryer Prolog
 
 Scryer Prolog is written in Rust.
 Follow [the instructions to install Rust](https://rustup.rs/).
@@ -47,3 +47,5 @@ $ cargo install --git https://github.com/mthom/scryer-prolog.git
     The AST includes all text in the parsed text, so position information can be calculated from the AST.
 
 * [lm.pro](lm.pro) is a proof of concept of parsing lightweight markup languages.
+
+* [asciidoc_poc.pro](asciidoc_poc.pro) a parser that handles constrained and unconstrained formatting in AsciiDoc.

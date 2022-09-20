@@ -62,8 +62,10 @@ line_part(X) --> unconstrained_formatting_mark(X), !.
 line_part(X) --> constrained_formatting_mark(X), !.
 line_part(X) --> char(X), !.
 
-line_parts([X|XS]) --> line_part(X), line_parts(XS).
-line_parts([]) --> [].
+line_parts_raw([X|XS]) --> line_part(X), line_parts_raw(XS).
+line_parts_raw([]) --> [].
+
+line_parts(XRFT, B, A) :- line_parts_raw(XR, B, A), flatten(XR, XRF), append([bl|XRFT], [el], XRF).
 
 parse_line(X, Y) :- append([[bl|X], [el]], XW), phrase(line_parts(Y), XW).
 
@@ -75,30 +77,30 @@ parse_line(X, Y) :- append([[bl|X], [el]], XW), phrase(line_parts(Y), XW).
 :- set_prolog_flag(double_quotes, chars).
 
 test(plain) :- parse_line("abc", X), !,
-	       assertion(X == [bl, a, b, c, el]).
+	       assertion(X == [a, b, c]).
 test(single_cfm) :- parse_line("*abc*", X), !,
-		    assertion(X == [[bl, cfm([*], [bl, a, b, c, el], [*])], el]).
+		    assertion(X == [cfm([*], [a, b, c], [*])).
 test(nested_cfm) :- parse_line("*_a_*", X), !,
-		    assertion(X == [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], el], [*])], el]).
+		    assertion(X == [cfm([*], [cfm(['_'], [a], ['_'])], [*])).
 
 test(double_nested_cfm) :- parse_line("*_a_ _b_*", X), !,
-                           assertion(X == [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], [' ', cfm(['_'], [bl, b, el], ['_'])], el], [*])], el]).
+                           assertion(X == [cfm([*], [cfm(['_'], [a], ['_']), ' ', cfm(['_'], [b], ['_'])], [*])]).
 
 test(cfm_no_constraint_outside) :- parse_line("a*b*", X), !,
-				   assertion(X == [bl, a, *, b, *, el]).
+				   assertion(X == [a, *, b, *]).
 test(cfm_no_constraint_inside) :- parse_line("* a *", X), !,
-				  assertion(X == [bl, *, ' ', a, ' ', *, el]).
+				  assertion(X == [*, ' ', a, ' ', *]).
 
 test(ucfm) :- parse_line("aaaaa**b**", X), !,
-	      assertion(X == [bl, a, a, a, a, a, ucfm([[*], [*], [bl, b, el], [*], [*]]), el]).
+	      assertion(X == [a, a, a, a, a, ucfm([[*], [*], [b], [*], [*]])]).
 test(ucfm_nested_in_cfm) :- parse_line("_aa**b**_", X), !,
-			    assertion(X == [[bl, cfm(['_'], [bl, a, a, ucfm([[*], [*], [bl, b, el], [*], [*]]), el], ['_'])], el]).
+			    assertion(X == [cfm(['_'], [a, a, ucfm([[*], [*], [b], [*], [*]])], ['_'])]).
 test(lone_ucfm) :- parse_line("**b**", X), !,
-		   assertion(X == [bl, ucfm([[*], [*], [bl, b, el], [*], [*]]), el]).
+		   assertion(X == [ucfm([[*], [*], [b], [*], [*]])]).
 test(lone_ucfm_with_nested_cfm) :- parse_line("**_b_**", X), !,
-				   assertion(X == [bl, ucfm([[*], [*], [[bl, cfm(['_'], [bl, b, el], ['_'])], el], [*], [*]]), el]).
+				   assertion(X == [ucfm([[*], [*], [cfm(['_'], [b], ['_'])], [*], [*]])]).
 
 test(consecutive_ucfms) :- parse_line("**a** **b**", X), !,
-			   assertion(X == [bl, ucfm([[*], [*], [bl, a, el], [*], [*]]), ' ', ucfm([[*], [*], [bl, b, el], [*], [*]]), el]).
+			   assertion(X == [ucfm([[*], [*], [a], [*], [*]]), ' ', ucfm([[*], [*], [b], [*], [*]])]).
 
 :- end_tests(basic).

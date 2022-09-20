@@ -25,11 +25,11 @@ formatting_mark("`") --> "`".
 formatting_mark("#") --> "#".
 formatting_mark("~") --> "~".
 
-pre_constrained_formatting_mark(pre_cfm(X)) --> space(X).
+pre_constrained_formatting_mark(pre_cfm(X)) --> space([X]).
 pre_constrained_formatting_mark(pre_cfm(bl)) --> [bl].
 
-post_constrained_formatting_mark(post_cfm(X)) --> space(X).
-post_constrained_formatting_mark(post_cfm(X)) --> punct(X).
+post_constrained_formatting_mark(post_cfm(X)) --> space([X]).
+post_constrained_formatting_mark(post_cfm(X)) --> punct([X]).
 post_constrained_formatting_mark(post_cfm(el)) --> [el].
 
 constrained_formatting_mark([Pre, cfm(F, T, F)]), [Post] -->
@@ -80,9 +80,8 @@ test(single_cfm) :- parse_line("*abc*", X), !,
 test(nested_cfm) :- parse_line("*_a_*", X), !,
 		    assertion(X == [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], el], [*])], el]).
 
-% but see below cfms_separted_by_single_space; this one has two spaces
-test(nested_cfm_double_two_spaces) :- parse_line("*_a_  _b_*", X), !,
-				      assertion(X == [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], [' '], [[' '], cfm(['_'], [bl, b, el], ['_'])], el], [*])], el]).
+test(double_nested_cfm) :- parse_line("*_a_ _b_*", X), !,
+                           assertion(X == [[bl, cfm([*], [[bl, cfm(['_'], [bl, a, el], ['_'])], [' ', cfm(['_'], [bl, b, el], ['_'])], el], [*])], el]).
 
 test(cfm_no_constraint_outside) :- parse_line("a*b*", X), !,
 				   assertion(X == [bl, a, *, b, *, el]).
@@ -99,12 +98,6 @@ test(lone_ucfm_with_nested_cfm) :- parse_line("**_b_**", X), !,
 				   assertion(X == [bl, ucfm([[*], [*], [[bl, cfm(['_'], [bl, b, el], ['_'])], el], [*], [*]]), el]).
 
 % KNOWN ISSUES
-
-test(cfms_separated_by_single_space_not_parsed) :- parse_line("*abc* *def*", X), !,
-						   assertion(X == [[bl, cfm([*], [bl, a, b, c, el], [*])], [' '], *, d, e, f, *, el]).
-% ... although...
-test(cfms_separated_by_two_spaces) :- parse_line("*abc*  *def*", X), !,
-				      assertion(X == [[bl, cfm([*], [bl, a, b, c, el], [*])], [' '], [[' '], cfm([*], [bl, d, e, f, el], [*])], el]).
 
 test(consecutive_ucfms_wrongly_nested) :- parse_line("**a** **b**", X), !,
 					  assertion(X == [bl, ucfm([[*], [*], [bl, a, el, ucfm([[*], [*], [bl, ' ', el], [*], [*]]), b], [*], [*]]), el]).

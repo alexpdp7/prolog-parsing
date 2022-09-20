@@ -52,6 +52,7 @@ unconstrained_formatting_mark(ucfm([F, F, T, F, F])) -->
     formatting_mark(F),
     formatting_mark(F),
     nested_line_parts(T,F),
+    {\+member(ucfm([F|_]), T)}, % a ucfm cannot contain the same ucfm; otherwise **a** **b** is **(a** **b)**
     formatting_mark(F),
     formatting_mark(F).
 
@@ -97,9 +98,7 @@ test(lone_ucfm) :- parse_line("**b**", X), !,
 test(lone_ucfm_with_nested_cfm) :- parse_line("**_b_**", X), !,
 				   assertion(X == [bl, ucfm([[*], [*], [[bl, cfm(['_'], [bl, b, el], ['_'])], el], [*], [*]]), el]).
 
-% KNOWN ISSUES
-
-test(consecutive_ucfms_wrongly_nested) :- parse_line("**a** **b**", X), !,
-					  assertion(X == [bl, ucfm([[*], [*], [bl, a, el, ucfm([[*], [*], [bl, ' ', el], [*], [*]]), b], [*], [*]]), el]).
+test(consecutive_ucfms) :- parse_line("**a** **b**", X), !,
+			   assertion(X == [bl, ucfm([[*], [*], [bl, a, el], [*], [*]]), ' ', ucfm([[*], [*], [bl, b, el], [*], [*]]), el]).
 
 :- end_tests(basic).

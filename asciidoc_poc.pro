@@ -3,7 +3,9 @@
 %
 % Differences from AsciiDoctor:
 %
-% * _*a*_ is not correctly handled by AsciiDoctor https://asciidoc.zulipchat.com/#narrow/stream/335219-asciidoc-lang/topic/Clarification.20on.20constrained.20formatting.20marks/near/299416275
+% * _*a*_ is not "valid" AsciiDoctor:
+%   * https://asciidoc.zulipchat.com/#narrow/stream/335219-asciidoc-lang/topic/Clarification.20on.20constrained.20formatting.20marks/near/299416275
+%   * https://docs.asciidoctor.org/asciidoc/latest/text/bold/#mixing-bold-with-other-formatting
 
 :- set_prolog_flag(double_quotes, chars).
 

@@ -54,7 +54,7 @@ not_prefixed_by_spaces(_).
 % this is a hack to surround the content of a constrained formatting mark in be-el
 nested_line_parts(X, F, B, A) :- append([B1, F, B2], B), append([[bl], B1, [el], F, B2], NB), line_parts(X, NB, A).
 
-unconstrained_formatting_mark(ucfm(F, F, T, F, F)) -->
+unconstrained_formatting_mark([ucfm(F, F, T, F, F)]) -->
     formatting_mark(F),
     formatting_mark(F),
     nested_line_parts(T,F),
@@ -62,7 +62,7 @@ unconstrained_formatting_mark(ucfm(F, F, T, F, F)) -->
     formatting_mark(F),
     formatting_mark(F).
 
-char(T) --> [T].
+char([T]) --> [T].
 
 line_part(X) --> unconstrained_formatting_mark(X), !.
 line_part(X) --> constrained_formatting_mark(X), !.
@@ -71,7 +71,7 @@ line_part(X) --> char(X), !.
 line_parts_raw([X|XS]) --> line_part(X), line_parts_raw(XS).
 line_parts_raw([]) --> [].
 
-line_parts(XRFT, B, A) :- line_parts_raw(XR, B, A), flatten(XR, XRF), append([bl|XRFT], [el], XRF).
+line_parts(XRFT, B, A) :- line_parts_raw(XR, B, A), append(XR, XRF), append([bl|XRFT], [el], XRF).
 
 parse_line(X, Y) :- append([[bl|X], [el]], XW), phrase(line_parts(Y), XW).
 

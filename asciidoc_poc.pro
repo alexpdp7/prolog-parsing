@@ -52,7 +52,7 @@ not_prefixed_by_spaces([' '|_]) :- !, fail.
 not_prefixed_by_spaces(_).
 
 % this is a hack to surround the content of a constrained formatting mark in be-el
-nested_line_parts(X, F, B, A) :- append([B1, F, B2], B), append([[bl], B1, [el], F, B2], NB), line_parts(X, NB, A).
+nested_line_parts(X, F, B, A) :- append([B1, F, B2], B), append([[bl|B1], [el], F, B2], NB), line_parts(X, NB, A).
 
 unconstrained_formatting_mark([ucfm(F, F, T, F, F)]) -->
     formatting_mark(F),

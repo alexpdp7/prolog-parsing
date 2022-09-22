@@ -58,7 +58,6 @@ unconstrained_formatting_mark([ucfm(F, F, T, F, F)]) -->
     formatting_mark(F),
     formatting_mark(F),
     nested_line_parts(T,F),
-    {\+member(ucfm([F|_]), T)}, % a ucfm cannot contain the same ucfm; otherwise **a** **b** is **(a** **b)**
     formatting_mark(F),
     formatting_mark(F).
 
